@@ -1,13 +1,8 @@
 const sequelize = require("../config/connection");
-const User = require('../models/User')
-const Thread = require('../models/Thread')
-const Comment = require('../models/Comment')
-
+const { Thread, User } = require("../models")
 
 const userData = require('./userData.json');
 const threadData = require('./threadData.json');
-
-console.log(User)
 
 const seedDatabase = async () => {
   await sequelize.sync({ force: true });
