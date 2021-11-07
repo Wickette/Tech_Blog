@@ -2,10 +2,11 @@ const router = require("express").Router();
 const { Thread, Comment, User } = require("../models")
 const withAuth = require("../utils/auth");
 
-// Use for all GET routes
+// use "/"
+
+//Get ALL threads (universal)
 router.get("/", async (req, res) => {
     try {
-      // Get all projects and JOIN with user data
       const threadData = await Thread.findAll({
         include: [
           {
@@ -21,7 +22,8 @@ router.get("/", async (req, res) => {
     }
   });
 
-router.get("/thread/:id", async (req, res) => {
+// Get all threads by user ID  (universal)
+router.get("/:id", async (req, res) => {
     try {
         const threadData = await Thread.findByPk(req.params.id, {
             include: [
@@ -48,8 +50,7 @@ router.get("/thread/:id", async (req, res) => {
     }
 });
 
-//LOGIN
 
-//SIGNUP
+
 
 module.exports = router;

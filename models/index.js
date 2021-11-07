@@ -7,10 +7,10 @@ Thread.hasMany(Comment, {
     foreignKey: "thread_id"
 });
 
-//Comment belongTo Thread
-// Comment.belongsTo(Thread, {
-//     foreignKey: "thread_id"
-// });
+// Comment belongTo Thread
+Comment.belongsTo(Thread, {
+    foreignKey: "thread_id"
+});
 
 //User hasMany comments
 // User.hasMany(Comment, {

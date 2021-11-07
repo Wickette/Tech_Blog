@@ -1,14 +1,13 @@
 const router = require("express").Router();
-const Thread = require("../models/Thread");
+const { Thread, User, Comment } = require("../models");
 
-
-//Get thread associated with user ID
-router.get("/", async (req, res) => {
+// Get threads related to Logged In user
+router.get("/dashboard", async (req, res) => {
     try {
         const threadData = await Thread.findAll({
-            where: {
-                user_id: req.session.user_id,
-            },
+            //where: {
+                // user_id: req.session.user_id,
+           // },
             include: [
                 {
                     model: User,
@@ -26,9 +25,11 @@ router.get("/", async (req, res) => {
                 },
             ],
         });
-        const threads = threadData.get({ plain: true });
+        const threads = threadData.map((thread) => thread.get({ plain: true }));
         res.status(200).json(threads)
     } catch (error) {
         res.status(500).json(error)
     }
-});
+  });
+
+  module.exports = router;
