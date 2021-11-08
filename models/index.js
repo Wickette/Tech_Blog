@@ -23,9 +23,10 @@ Comment.belongsTo(User, {
 });
 
 //User hasMany Threads
-// User.hasMany(Thread, {
-//     foreignKey: "user_id"
-// });
+User.hasMany(Thread, {
+    foreignKey: "user_id"
+});
+
 //Threads belongTo to User
 Thread.belongsTo(User, {
     foreignKey: "user_id"

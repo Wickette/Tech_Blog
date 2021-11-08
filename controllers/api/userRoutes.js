@@ -18,11 +18,11 @@ router.post('/signup', async (req, res) => {
         username: req.body.username,
         password: req.body.password,
       });
-      // req.session.save(() => {
-      //   req.session.user_id = userData.id;
-      //   req.session.logged_in = true;
-      //   res.status(200).json(userData);
-      // });
+      req.session.save(() => {
+        req.session.user_id = userData.id;
+        req.session.logged_in = true;
+        res.status(200).json(userData);
+      });
     } catch (err) {
       res.status(400).json(err);
     }
@@ -45,11 +45,12 @@ router.post('/login', async (req, res) => {
         .json({ message: 'Incorrect email or password, please try again' });
       return;
     }
-    // req.session.save(() => {
-    //   req.session.user_id = userData.id;
-    //   req.session.logged_in = true;
-    //   res.json({ user: userData, message: 'You are now logged in!' });
-    // });
+    req.session.save(() => {
+      req.session.user_id = userData.id;
+      req.session.logged_in = true;
+      console.log(req.session.user_id)
+      res.json({ user: userData, message: 'You are now logged in!' });
+    });
   } catch (err) {
     res.status(400).json(err);
   }

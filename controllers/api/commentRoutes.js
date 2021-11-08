@@ -19,8 +19,8 @@ router.post("/:id", async (req, res) => {
     try {
         const newComment = await Comment.create({
             description: req.body.description,
-            thread_id: req.body.thread_id
-            // user_id: req.session.user_id
+            thread_id: req.body.thread_id,
+            user_id: req.session.user_id
         });
         res.status(200).json(newComment);
     } catch (error) {
@@ -35,9 +35,7 @@ router.put("/:id", async (req, res) => {
             user_id: req.body.user_id,
         },
         {
-            where: {
-                id: req.params.id
-            }
+            where: {id: req.params.id}
         });
         res.status(200).json(updateComment);
     } catch (error) {
@@ -48,9 +46,7 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
     try {
         const deleteComment = await Comment.destroy({
-            where: {
-                id: req.params.id
-            }
+            where: {id: req.params.id}
         });
         if (!deleteThread) {
             res.status(404).json({messgage: "No thread with that id"});
