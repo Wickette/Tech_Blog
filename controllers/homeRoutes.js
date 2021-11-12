@@ -2,32 +2,86 @@ const router = require("express").Router();
 const { Thread, Comment, User } = require("../models")
 const withAuth = require("../utils/auth");
 
-// endpoint "/"
-
 //Get ALL threads (universal)
-router.get("/", withAuth, async (req, res) => {
+router.get("/", async (req, res) => {
     try {
       const threadData = await Thread.findAll({
         include: [{model: User, attributes: ["username"]}],
       });
       const threads = threadData.map((thread) => thread.get({ plain: true }));
-      res.status(200).json(threads)
+      res.render("homepage", {
+        threads,
+        logged_in: req.session.logged_in
+      });
     } catch (err) {
       res.status(500).json(err);
     }
   });
 
 // Get all threads by user ID  (universal)
-router.get("/:id", async (req, res) => {
+router.get("/thread/:id", async (req, res) => {
     try {
         const threadData = await Thread.findByPk(req.params.id, {
-            include: [{model: User, attributes: ["username"]}, {model: Comment, attributes: ["description","date_created"], include: [{model: User, attributes: ["username"]}]}],
+            include: [{model: User, attributes: ["username"]}, {model: Comment, include: [{model: User, attributes: ["username"]}]}],
         });
         const threads = threadData.get({ plain: true });
-        res.status(200).json(threads)
+          res.render("threads", {
+          ...threads,
+          logged_in: req.session.logged_in,
+        });
     } catch (error) {
         res.status(500).json(error)
     }
 });
+
+// Get threads related to Logged In user
+router.get("/dashboard", withAuth, async (req, res) => { 
+  try {
+      const userData = await User.findByPk(req.session.user_id, {
+        attributes: { exclude: ["password"] },
+        include: [{ model: Thread }]
+      });
+      const user = userData.get({ plain: true });
+      res.render("dashboard", {
+        ...user,
+        logged_in: true
+      })
+  } catch (error) {
+      res.status(500).json(error)
+  }
+});
+
+router.get("/login", (req, res) => {
+  if (req.session.logged_in) {
+    res.redirect("/")
+    return
+  }
+    res.render("login")
+});
+
+router.get("/newThread", withAuth, (req, res) => {
+  res.render("newThread", {
+    logged_in: true
+  })
+})
+
+router.get("/edit/:id", withAuth, async (req, res) => {
+  try {
+    const threadData = await Thread.findByPk(req,params.id, {
+      include: [{model:User, attributes: ["username"]}]
+    })
+    const threads = threadData.get({plain:true});
+    if (threads.user_id === req.session.user_id) {
+      res.render("edit", {
+        ...threads,
+        logged_in: req.session.logged_in
+      });
+    } else {
+      res.render("login")
+    }
+  } catch (error) {
+    res.status(500).json(error)
+  }
+})
 
 module.exports = router;
