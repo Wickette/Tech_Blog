@@ -1,13 +1,14 @@
 const router = require("express").Router();
 const { Thread } = require("../../models");
 const withAuth = require("../../utils/auth");
-// use /api/thread
+// use /api/threads
 
 //create thread
 router.post("/", async (req, res) => {
     try {
         const newThread = await Thread.create({
-            ...req.body,
+            title: req.body.title,
+            description: req.body.description,
             user_id: req.session.user_id,
         });
         res.status(200).json(newThread)
@@ -35,18 +36,13 @@ router.put("/:id", async (req, res) => {
 });
 
 //delete thread
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", withAuth, async (req, res) => {
     try {
         const deleteThread = await Thread.destroy({
             where: {
                 id: req.params.id,
-                user_id: req.session.user_id
             }
         });
-        if (!deleteThread) {
-            res.status(404).json({messgage: "No thread with that id"});
-            return
-        }
         res.status(200).json(deleteThread)
     } catch (error) {
         res.status(500).json(error)

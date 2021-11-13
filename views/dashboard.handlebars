@@ -1,13 +1,19 @@
+<div style="display: flex; justify-content:center;">
+<a href="/newThread" type="button" class="btn mb-2 mb-md-0 btn-outline-primary btn-block">Add a new Thread</a>
+</div>
+
 {{#each threads as |thread|}}
 <div class="card text-center" style="margin: 20px;">
-  <div class="card-header"></div>
+  <div class="card-header">
+  <h5 class="card-title"><a class="link" href="/dashboard/edit/{{thread.id}}">{{thread.title}}</a></h5>
+  </div>
   <div class="card-body">
-    <h5 class="card-title">{{thread.title}}</h5>
     <p class="card-text">
       {{thread.description}}
     </p>
-    <a href="/thread/{{thread.id}}" class="btn btn-primary">Go to thread</a>
+    <a type="button" class="btn mb-2 mb-md-0 btn-outline-primary btn-block" href="/thread/{{thread.id}}">Go to thread</a>
   </div>
   <div class="card-footer text-muted">{{format_date thread.date_created}}</div>
 </div>
 {{/each}}
+

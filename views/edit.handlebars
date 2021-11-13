@@ -1,0 +1,15 @@
+<div class="card text-center" style="margin: 20px;">
+  <div class="card-header">Thread Editor...</div>
+  <form class="card-body" id="editThread">
+    <input id="title" type="text" class="card-title form-input w-100" style="text-align: center;" placeholder="{{title}}" ></input>
+    <textarea id="description" type="text" class="card-text form-input w-100" style="text-align: center; height:200px">
+      {{description}}
+    </textarea>
+    <div class="text-muted">Posted by: {{user.username}} on {{format_date date_created}}</div>
+    <a id="editThreadBtn" type="button" class="btn mb-2 mb-md-0 btn-outline-primary btn-block">Submit Edit</a>
+    <a id="deleteThreadBtn" type="button" class="btn mb-2 mb-md-0 btn-outline-danger btn-block">Delete Thread</a>
+  </form>
+</div>
+
+<script src="/js/edit-thread.js"></script>
+<script src="/js/delete-thread.js"></script>

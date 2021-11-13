@@ -21,10 +21,10 @@ router.get("/", async (req, res) => {
 // Get all threads by user ID  (universal)
 router.get("/thread/:id", async (req, res) => {
     try {
-        const threadData = await Thread.findByPk(req.params.id, {
+        const editThread = await Thread.findByPk(req.params.id, {
             include: [{model: User, attributes: ["username"]}, {model: Comment, include: [{model: User, attributes: ["username"]}]}],
         });
-        const threads = threadData.get({ plain: true });
+        const threads = editThread.get({ plain: true });
           res.render("threads", {
           ...threads,
           logged_in: req.session.logged_in,
@@ -65,9 +65,10 @@ router.get("/newThread", withAuth, (req, res) => {
   })
 })
 
-router.get("/edit/:id", withAuth, async (req, res) => {
+router.get("/dashboard/edit/:id", withAuth, async (req, res) => {
   try {
-    const threadData = await Thread.findByPk(req,params.id, {
+    const threadData = await Thread.findOne({
+      where: {id: req.params.id},
       include: [{model:User, attributes: ["username"]}]
     })
     const threads = threadData.get({plain:true});
@@ -82,6 +83,10 @@ router.get("/edit/:id", withAuth, async (req, res) => {
   } catch (error) {
     res.status(500).json(error)
   }
+})
+
+router.get("/logout", (req, res) => {
+  res.redirect("/")
 })
 
 module.exports = router;

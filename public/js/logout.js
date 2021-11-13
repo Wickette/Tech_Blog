@@ -3,9 +3,9 @@ const logout = async () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
     });
-  
     if (response.ok) {
-      document.location.redirect("/login");
+      alert("You have been logged out")
+      document.location.replace("/login");
     } else {
       alert(response.statusText);
     }
