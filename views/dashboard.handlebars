@@ -1,11 +1,11 @@
 <div style="display: flex; justify-content:center;">
 <a href="/newThread" type="button" class="btn mb-2 mb-md-0 btn-outline-primary btn-block">Add a new Thread</a>
 </div>
-
+<p style="text-align: center; color:lightgray"><em>*Click on the thread title once created, if you would like to update/delete*</em></p>
 {{#each threads as |thread|}}
 <div class="card text-center" style="margin: 20px;">
   <div class="card-header">
-  <h5 class="card-title"><a class="link" href="/dashboard/edit/{{thread.id}}">{{thread.title}}</a></h5>
+  <h5 class="card-title"><a class="link" style="text-decoration: none;" href="/dashboard/edit/{{thread.id}}">{{thread.title}}</a></h5>
   </div>
   <div class="card-body">
     <p class="card-text">
